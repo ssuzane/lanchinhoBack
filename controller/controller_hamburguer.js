@@ -81,6 +81,41 @@ const setInserirNovoHamburguer = async function(dadosHamburguer, contentType) {
     }
 }
 
+const setAtualizarHamburguer = async function(dadosHamburguer, contentType, id){
+
+    try {
+        if(String(contentType).toLowerCase() == 'application/json'){
+
+            let resultDadosHamburguer = {}
+
+            if(id === ''|| id === undefined ||
+                dadosHamburguer.nome === '' || dadosHamburguer.nome === undefined || dadosHamburguer.nome.length > 200 ||
+                dadosHamburguer.preco === '' || dadosHamburguer.preco === undefined || dadosHamburguer.preco.length > 100 
+            ){
+                return message.ERROR_REQUIERED_FIELDS
+            }
+
+            let atualiHamburguer = await hambuguerDAO.upadateHamburguer(dadosHamburguer, id)
+
+            dadosHamburguer.id = id
+
+            if(atualiHamburguer){
+                resultDadosHamburguer.status = message.SUCESS_CREATED_ITEM.status
+                resultDadosHamburguer.status_code = message.SUCESS_CREATED_ITEM.status_code
+                resultDadosHamburguer.ERROR_message = message.SUCESS_CREATED_ITEM.message
+                resultDadosHamburguer.hamburguer = dadosHamburguer
+
+                return resultDadosHamburguer
+            }else{
+                return message.ERRO_INTERNAL_SERVER_DB
+            }
+        }else{
+            return message.ERROR_REQUIERED_FIELDS
+        }
+    }catch(error){
+        message.ERRO_INTERNAL_SERVER
+    }
+}
 
 
 
@@ -90,5 +125,6 @@ const setInserirNovoHamburguer = async function(dadosHamburguer, contentType) {
 module.exports = {
     getListarHambuguer,
     getBuscarHamburguer,
-    setInserirNovoHamburguer
+    setInserirNovoHamburguer,
+    setAtualizarHamburguer
 }

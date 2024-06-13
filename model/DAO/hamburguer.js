@@ -63,27 +63,43 @@ const upadateHamburguer = async function (dadosHamburguer,id){
         if(dadosHamburguer) {
             sql = `update tbl_hamburguer set
                         nome = '${dadosHamburguer.nome}',
-                        preco = '${dadosHamburguer.preco}',
-                        where id ${id}
-                   `
+                        preco = '${dadosHamburguer.preco}'
+                        where id = ${id}`
         }
 
-        let
-         resultStatus = await prisma.$executeRawUnsafe(sql)
+        let resultStatus = await prisma.$executeRawUnsafe(sql)
 
-         if(resultStatus)
-            return true
-        else
-           return false
+         if(resultStatus){
+             return true
+         } else {
+             return false
+         }
     }catch(error){
+        console.error(error)
         return false
     }
 
 }
 
+const deleteHamburguer = async function(id){
+    try{
+        let sql = `delete from tbl_hamburguer where id = ${id}`
+
+        let rsHamburguer = await prisma.$executeRawUnsafe(sql)
+
+        return rsHamburguer
+    }catch(error){
+
+        console.log(error)
+        return false
+    }
+}
+
+
 module.exports = {
     selectAllHamburguers,
     selectByIdHamburgues,
     insertHamburguer,
-    upadateHamburguer
+    upadateHamburguer,
+    deleteHamburguer
 }

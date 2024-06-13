@@ -1,7 +1,6 @@
 const hambuguerDAO = require('../model/DAO/hamburguer.js')
 const message = require('../modulo/config.js')
 
-// listar hambuguer
 
 const getListarHambuguer = async function(){
 
@@ -99,6 +98,7 @@ const setAtualizarHamburguer = async function(dadosHamburguer, contentType, id){
 
             dadosHamburguer.id = id
 
+            console.log(atualiHamburguer);
             if(atualiHamburguer){
                 resultDadosHamburguer.status = message.SUCESS_CREATED_ITEM.status
                 resultDadosHamburguer.status_code = message.SUCESS_CREATED_ITEM.status_code
@@ -113,11 +113,42 @@ const setAtualizarHamburguer = async function(dadosHamburguer, contentType, id){
             return message.ERROR_REQUIERED_FIELDS
         }
     }catch(error){
+        console.error(error);
         message.ERRO_INTERNAL_SERVER
     }
 }
 
+const setExcluirHamburguer = async function(id){
 
+    try{
+        
+        let idHamburguer = id
+
+        let validacaoHamburguer = await getBuscarHamburguer(idHamburguer)
+
+        if(idHamburguer == '' || idHamburguer == undefined || isNaN(idHamburguer)){
+
+            return message.ERROR_INVALID_ID
+        }else if(validacaoHamburguer.status == false){
+            
+            return message.ERROR_NOT_FOUND
+        }else{
+
+            let resulDados = await hambuguerDAO.deleteHamburguer(idHamburguer)
+
+            if(resulDados){
+                return message.SUCESS_CREATED_ITEM
+            }else{
+                return message.ERRO_INTERNAL_SERVER_DB
+            }
+
+        }
+
+    }catch(error){
+        console.log(error)
+        message.ERRO_INTERNAL_SERVER
+    }
+}
 
 
 
@@ -126,5 +157,6 @@ module.exports = {
     getListarHambuguer,
     getBuscarHamburguer,
     setInserirNovoHamburguer,
-    setAtualizarHamburguer
+    setAtualizarHamburguer,
+    setExcluirHamburguer
 }

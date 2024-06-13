@@ -89,8 +89,6 @@ const deleteHamburguer = async function(id){
 
         return rsHamburguer
     }catch(error){
-
-        console.log(error)
         return false
     }
 }

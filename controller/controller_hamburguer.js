@@ -98,7 +98,6 @@ const setAtualizarHamburguer = async function(dadosHamburguer, contentType, id){
 
             dadosHamburguer.id = id
 
-            console.log(atualiHamburguer);
             if(atualiHamburguer){
                 resultDadosHamburguer.status = message.SUCESS_CREATED_ITEM.status
                 resultDadosHamburguer.status_code = message.SUCESS_CREATED_ITEM.status_code
@@ -137,7 +136,7 @@ const setExcluirHamburguer = async function(id){
             let resulDados = await hambuguerDAO.deleteHamburguer(idHamburguer)
 
             if(resulDados){
-                return message.SUCESS_CREATED_ITEM
+                return message.SUCESS_DELETED_ITEM
             }else{
                 return message.ERRO_INTERNAL_SERVER_DB
             }
@@ -145,7 +144,6 @@ const setExcluirHamburguer = async function(id){
         }
 
     }catch(error){
-        console.log(error)
         message.ERRO_INTERNAL_SERVER
     }
 }
